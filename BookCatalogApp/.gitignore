@@ -6,6 +6,7 @@
 .DS_Store
 /build
 /captures
+/.project
 
 
 # Created by https://www.gitignore.io/api/android,intellij,linux,java
