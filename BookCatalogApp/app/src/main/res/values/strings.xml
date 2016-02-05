@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BookCatalog</string>
     <string name="ref_desenvolvedor">Desenvolvido por Wanderlei Santos</string>
+    <string name="text_description">Descrição</string>
 </resources>
