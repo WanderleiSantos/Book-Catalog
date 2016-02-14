@@ -1,50 +1,92 @@
 package com.wanderlei.bookcatalog.view.listviewadapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.model.entity.Book;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by wanderlei on 12/02/16.
  */
-public class ListBookAdapter extends RecyclerView.Adapter<ListBookAdapter.ViewHolder> implements View.OnClickListener  {
+public class ListBookAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<Book> bookList;
     private LayoutInflater mLayoutInflater;
     private RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack;
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+    public ListBookAdapter( List<Book> bookList, Context mContext) {
+        this.mContext = mContext;
+        this.bookList = bookList;
+        this.mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
+    public int getCount() {
+        return bookList != null ? bookList.size() : 0;
     }
 
     @Override
-    public int getItemCount() {
-        return 0;
+    public Object getItem(int position) {
+        return bookList != null ? bookList.get(position) : null;
     }
 
     @Override
-    public void onClick(View v) {
-
+    public long getItemId(int position) {
+        return position;
     }
 
-    public class ViewHolder  extends RecyclerView.ViewHolder {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+        ViewHolder viewHolder = null;
+
+        if (convertView == null){
+
+            viewHolder = new ViewHolder();
+            int layout = R.layout.list_books;
+            convertView = mLayoutInflater.inflate(layout, null);
+            convertView.setTag(viewHolder);
+
+            viewHolder.bookTitle = (TextView) convertView.findViewById(R.id.bookTitle);
+            viewHolder.bookReleaseDate = (TextView) convertView.findViewById(R.id.bookReleaseDate);
+            viewHolder.bookAuthor = (TextView) convertView.findViewById(R.id.bookAuthor);
+            viewHolder.bookThumbnail = (ImageView) convertView.findViewById(R.id.bookThumbnail);
+
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        Book book = bookList.get(position);
+        viewHolder.bookTitle.setText(book.getTitle());
+
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+       // Date data = book.getPublishedDate();
+      //  String formatDate = dateFormat.format(data);
+    //    viewHolder.bookReleaseDate.setText(formatDate);
+
+        viewHolder.bookAuthor.setText(book.getAuthor());
+        Glide.with(mContext).load(book.getSmallThumbnail()).placeholder(R.drawable.noimagebook).into(viewHolder.bookThumbnail);
+
+        return convertView;
+    }
+
+    static class ViewHolder{
+        TextView bookTitle;
+        TextView bookReleaseDate;
+        TextView bookAuthor;
+        ImageView bookThumbnail;
     }
 }

@@ -2,4 +2,11 @@
     <string name="app_name">BookCatalog</string>
     <string name="ref_desenvolvedor">Desenvolvido por Wanderlei Santos</string>
     <string name="text_description">Descrição</string>
+
+    <string name="fragment_list_books">Lançamentos</string>
+    <string name="text_lançamentos">Lançamentos</string>
+    <string name="text_authors">Autores</string>
+    <string name="title_activity_author">Autores</string>
+
+
 </resources>

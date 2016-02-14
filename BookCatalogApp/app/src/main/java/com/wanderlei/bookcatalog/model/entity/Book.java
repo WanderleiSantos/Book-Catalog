@@ -23,7 +23,121 @@ public class Book implements Parcelable {
     private String printType;
     private String categories;
     private String smallThumbnail;
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public void setKind(String kind) {
+        Kind = kind;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public void setPublishedDate(Date publishedDate) {
+        this.publishedDate = publishedDate;
+    }
+
+    public void setIsbn_13(String isbn_13) {
+        this.isbn_13 = isbn_13;
+    }
+
+    public void setIsbn_10(String isbn_10) {
+        this.isbn_10 = isbn_10;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public void setPrintType(String printType) {
+        this.printType = printType;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
+
+    public void setSmallThumbnail(String smallThumbnail) {
+        this.smallThumbnail = smallThumbnail;
+    }
+
     private String thumbnail;
+
+    public String getKind() {
+        return Kind;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public Date getPublishedDate() {
+        return publishedDate;
+    }
+
+    public String getIsbn_13() {
+        return isbn_13;
+    }
+
+    public String getIsbn_10() {
+        return isbn_10;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public String getPrintType() {
+        return printType;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public String getSmallThumbnail() {
+        return smallThumbnail;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
 
     @Override
     public int describeContents() {

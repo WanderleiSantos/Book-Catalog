@@ -30,7 +30,7 @@
         android:text="Java - Guia Completo"/>
 
     <TextView
-        android:id="@+id/movieReleaseDate"
+        android:id="@+id/bookReleaseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -41,14 +41,15 @@
         android:text="11/12/2014"/>
 
     <TextView
-        android:id="@+id/movieAuthor"
+        android:id="@+id/bookAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/movieReleaseDate"
         android:alpha="0.87"
         android:padding="4dp"
         android:textSize="12sp"
-        android:text="Author N/A"/>
+        android:text="Author N/A"
+        android:layout_below="@+id/bookReleaseDate"
+        android:layout_alignRight="@+id/bookReleaseDate"
+        android:layout_alignEnd="@+id/bookReleaseDate" />
 
 </RelativeLayout>

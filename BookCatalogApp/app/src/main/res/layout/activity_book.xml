@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="@color/bluegrey500"
+            app:contentScrim="@color/colorHighlight"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp">
 

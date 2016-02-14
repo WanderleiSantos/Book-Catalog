@@ -4,10 +4,16 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/drawer_evento"
+            android:id="@+id/drawer_lancamentos"
             android:checked="true"
+            android:icon="@drawable/ic_lancamento"
+            android:title="@string/text_lançamentos"/>
 
-            android:title="@string/app_name"/>
+        <item
+            android:id="@+id/drawer_authors"
+            android:checked="true"
+            android:icon="@drawable/ic_author"
+            android:title="@string/text_authors"/>
 
     </group>
 </menu>
