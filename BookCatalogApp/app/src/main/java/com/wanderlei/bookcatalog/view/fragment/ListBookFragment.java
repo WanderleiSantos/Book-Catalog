@@ -33,8 +33,8 @@ public class ListBookFragment extends Fragment {
 
     private ListView listView;
     private List<Book> bookList;
-    private List<Book> bookListJson;
-    public static final String API = "https://www.googleapis.com/books/v1/";
+    private List<Book> bookListJson = new ArrayList<>();
+    public static final String API = "https://www.googleapis.com/books/v1";
 
     private static final String MYBOOKLIST_KEY = "booklist_key";
 
@@ -81,37 +81,25 @@ public class ListBookFragment extends Fragment {
         BookAPI bookAPI = retrofit.create(BookAPI.class);
 
 
-        final Call<List<Book>> listCallBooks = bookAPI.getBooks("volumes?q=quilting");
+        final Call<List<Book>> listCallBooks = bookAPI.getBooks();
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    bookListJson = listCallBooks.execute().body();
+                    List<Book> books = listCallBooks.execute().body();
+                    if (books != null) {
+                        for (Book b : books) {
+                            bookListJson.add(b);
+                        }
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
         thread.start();
-//        new Thread(){
-//            @Override
-//            public void run() {
-//                super.run();
-//
-//                try{
-//                    List<Book>  books =  listCallBooks.execute().body();
-//                    if (books != null) {
-//                       for (Book book : books){
-//                           bookListJson.add(book);
-//                       }
-//                    }
-//
-//                }catch (IOException e ){
-//                    e.printStackTrace();
-//                }
-//            }
-//        }.start();
 
         return bookListJson;
     }

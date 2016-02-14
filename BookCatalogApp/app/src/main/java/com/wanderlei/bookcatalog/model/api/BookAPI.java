@@ -14,6 +14,7 @@ import retrofit.http.Path;
 public interface BookAPI {
 
     //volumes?q=quilting
-    @GET("{filter}")
-    Call<List<Book>> getBooks(@Path("filter") String filter);
+    @GET("volumes?q=quilting")
+    Call<List<Book>> getBooks();
+
 }
