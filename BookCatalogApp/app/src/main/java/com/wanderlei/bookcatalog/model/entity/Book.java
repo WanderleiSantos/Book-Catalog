@@ -3,6 +3,8 @@ package com.wanderlei.bookcatalog.model.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 /**
@@ -12,6 +14,7 @@ public class Book implements Parcelable {
 
     private String Kind;
     private String id;
+    @SerializedName("title")
     private String title;
     private String description;
     private String author;

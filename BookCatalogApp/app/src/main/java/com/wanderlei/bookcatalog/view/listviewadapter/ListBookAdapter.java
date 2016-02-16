@@ -14,6 +14,7 @@ import com.wanderlei.bookcatalog.model.entity.Book;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,10 +28,16 @@ public class ListBookAdapter extends BaseAdapter {
     private LayoutInflater mLayoutInflater;
     private RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack;
 
-    public ListBookAdapter( List<Book> bookList, Context mContext) {
+    public ListBookAdapter( Context mContext) {
         this.mContext = mContext;
-        this.bookList = bookList;
+    //    this.bookList = bookList;
         this.mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void setBooks(List<Book> listBoks) {
+        this.bookList = listBoks;
+        //update the adapter to reflect the new set of movies
+        notifyDataSetChanged();
     }
 
     @Override
@@ -72,10 +79,10 @@ public class ListBookAdapter extends BaseAdapter {
         Book book = bookList.get(position);
         viewHolder.bookTitle.setText(book.getTitle());
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-       // Date data = book.getPublishedDate();
-      //  String formatDate = dateFormat.format(data);
-    //    viewHolder.bookReleaseDate.setText(formatDate);
+     //   DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+  //      Date data = book.getPublishedDate();
+  //      String formatDate = dateFormat.format(data);
+  //      viewHolder.bookReleaseDate.setText(formatDate);
 
         viewHolder.bookAuthor.setText(book.getAuthor());
         Glide.with(mContext).load(book.getSmallThumbnail()).placeholder(R.drawable.noimagebook).into(viewHolder.bookThumbnail);
