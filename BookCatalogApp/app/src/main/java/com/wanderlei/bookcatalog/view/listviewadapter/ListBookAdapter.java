@@ -32,13 +32,11 @@ public class ListBookAdapter extends BaseAdapter {
 
     public ListBookAdapter( Context mContext) {
         this.mContext = mContext;
-    //    this.bookList = bookList;
         this.mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void setBooks(List<Book> listBoks) {
         this.bookList = listBoks;
-        //update the adapter to reflect the new set of movies
         notifyDataSetChanged();
     }
 
@@ -89,8 +87,6 @@ public class ListBookAdapter extends BaseAdapter {
         } else {
             viewHolder.bookThumbnail.setImageDrawable(viewHolder.bookThumbnail.getContext().getResources().getDrawable(R.drawable.noimagebook));
         }
-
-        //Glide.with(mContext).load(book.getVolumeInfo().getImage().getSmallThumbnail()).placeholder(R.drawable.noimagebook).into(viewHolder.bookThumbnail);
 
         return convertView;
     }

@@ -28,9 +28,6 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
     private List<Book> bookListJson = new ArrayList<>();
     private ListBookAdapter bookAdapter;
 
-
-    //public static final String API = "https://www.googleapis.com/books/v1/";
-
     private static final String MYBOOKLIST_KEY = "booklist_key";
 
     @Nullable
@@ -48,11 +45,9 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
             if (bookArray != null){
                 bookList = Arrays.asList(bookArray);
             } else {
-              //  bookList = getBookList();
                 new AsyncTaskLoadBooks(this).execute();
             }
         } else {
-            //bookList = getBookList();
             new AsyncTaskLoadBooks(this).execute();
         }
 
@@ -66,43 +61,6 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
             outState.putParcelableArray(MYBOOKLIST_KEY, bookList.toArray(new Book[bookList.size()]));
         }
         super.onSaveInstanceState(outState);
-    }
-
-    private List<Book> getBookList(){
-
-//        Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ItemTypeAdapterFactory()).create();
-//        Retrofit retrofit = new Retrofit
-//                .Builder()
-//                .baseUrl(API)
-//                .addConverterFactory(GsonConverterFactory.create(gson))
-//                .build();
-//        BookAPI bookAPI = retrofit.create(BookAPI.class);
-//
-//
-//        final Call<List<Book>> listCallBooks = bookAPI.getBooks();
-//
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//
-//                    Response<List<Book>> response = listCallBooks.execute();
-//                    List<Book> books = response.body();
-//                    //List<Book> books = listCallBooks.execute().body();
-//                    if (books != null) {
-//                        for (Book b : books) {
-//                            bookListJson.add(b);
-//                        }
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//        thread.start();
-
-        return bookListJson;
     }
 
     @Override

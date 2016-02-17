@@ -13,7 +13,6 @@ import retrofit.http.Path;
  */
 public interface BookAPI {
 
-    //volumes?q=quilting
     @GET("volumes?q=quilting")
     Call<List<Book>> getBooks();
 

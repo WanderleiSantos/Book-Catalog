@@ -47,7 +47,6 @@ public class AsyncTaskLoadBooks extends AsyncTask<Void, Void, List<Book>> {
 
             Response<List<Book>> response = listCallBooks.execute();
             books = response.body();
-//            books = listCallBooks.execute().body();
 
         } catch (Exception e) {
             e.printStackTrace();
