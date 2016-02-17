@@ -25,7 +25,6 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
 
     private ListView listView;
     private List<Book> bookList;
-    private List<Book> bookListJson = new ArrayList<>();
     private ListBookAdapter bookAdapter;
 
     private static final String MYBOOKLIST_KEY = "booklist_key";
@@ -44,6 +43,7 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
             Book[] bookArray = (Book[]) savedInstanceState.getParcelableArray(MYBOOKLIST_KEY);
             if (bookArray != null){
                 bookList = Arrays.asList(bookArray);
+                bookAdapter.setBooks(bookList);
             } else {
                 new AsyncTaskLoadBooks(this).execute();
             }
@@ -66,5 +66,6 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
     @Override
     public void onUpcomingMoviesLoaded(List<Book> listBooks) {
         bookAdapter.setBooks(listBooks);
+        this.bookList = listBooks;
     }
 }
