@@ -20,7 +20,7 @@ import retrofit.Retrofit;
  */
 public class AsyncTaskLoadBooks extends AsyncTask<Void, Void, List<Book>> {
 
-    public static final String API =  "https://www.googleapis.com/books/v1/";
+    public static final String API = "https://www.googleapis.com/books/v1/";
     private  List<Book> books;
     private BookLoadedListener myComponent;
 

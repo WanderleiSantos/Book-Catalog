@@ -9,12 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.model.entity.Book;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -77,15 +79,18 @@ public class ListBookAdapter extends BaseAdapter {
         }
 
         Book book = bookList.get(position);
-        viewHolder.bookTitle.setText(book.getTitle());
+        viewHolder.bookTitle.setText(book.getVolumeInfo().getTitle());
+        viewHolder.bookReleaseDate.setText(book.getVolumeInfo().getPublishedDate());
 
-     //   DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-  //      Date data = book.getPublishedDate();
-  //      String formatDate = dateFormat.format(data);
-  //      viewHolder.bookReleaseDate.setText(formatDate);
+        viewHolder.bookAuthor.setText( Arrays.toString(book.getVolumeInfo().getAuthor()));
 
-        viewHolder.bookAuthor.setText(book.getAuthor());
-        Glide.with(mContext).load(book.getSmallThumbnail()).placeholder(R.drawable.noimagebook).into(viewHolder.bookThumbnail);
+        if (book.getVolumeInfo().getImage() != null && book.getVolumeInfo().getImage().getSmallThumbnail() != null) {
+            Picasso.with(viewHolder.bookThumbnail.getContext()).load(book.getVolumeInfo().getImage().getSmallThumbnail()).placeholder(R.drawable.noimagebook).into(viewHolder.bookThumbnail);
+        } else {
+            viewHolder.bookThumbnail.setImageDrawable(viewHolder.bookThumbnail.getContext().getResources().getDrawable(R.drawable.noimagebook));
+        }
+
+        //Glide.with(mContext).load(book.getVolumeInfo().getImage().getSmallThumbnail()).placeholder(R.drawable.noimagebook).into(viewHolder.bookThumbnail);
 
         return convertView;
     }

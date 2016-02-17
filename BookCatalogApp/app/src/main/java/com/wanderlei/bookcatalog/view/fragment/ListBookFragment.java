@@ -29,7 +29,7 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
     private ListBookAdapter bookAdapter;
 
 
-    public static final String API = "https://www.googleapis.com/books/v1/";
+    //public static final String API = "https://www.googleapis.com/books/v1/";
 
     private static final String MYBOOKLIST_KEY = "booklist_key";
 
