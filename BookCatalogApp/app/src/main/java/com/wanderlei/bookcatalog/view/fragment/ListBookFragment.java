@@ -6,12 +6,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.model.api.asynctask.AsyncTaskLoadBooks;
 import com.wanderlei.bookcatalog.model.api.asynctask.BookLoadedListener;
 import com.wanderlei.bookcatalog.model.entity.Book;
+import com.wanderlei.bookcatalog.view.activity.BookActivity;
 import com.wanderlei.bookcatalog.view.listviewadapter.ListBookAdapter;
 
 import java.util.ArrayList;
@@ -38,6 +40,13 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
         bookAdapter = new ListBookAdapter(getActivity());
         listView = (ListView) view.findViewById(R.id.listview_books);
         listView.setAdapter(bookAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Book book = (Book) parent.getAdapter().getItem(position);
+                startActivity(BookActivity.newIntent(getActivity(), book));
+            }
+        });
 
         if (savedInstanceState != null){
             Book[] bookArray = (Book[]) savedInstanceState.getParcelableArray(MYBOOKLIST_KEY);

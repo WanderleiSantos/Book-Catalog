@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String API = "https://www.googleapis.com/books/v1/volumes?q=colecionador&key=";
     private DrawerLayout drawerLayout;
+    private ViewPager viewPager;
 
 
     @Override
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -47,7 +48,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 if (item.getItemId() == R.id.drawer_authors) {
                     drawerLayout.closeDrawers();
+                    viewPager.setCurrentItem(1);
                   //  startActivity(AuthorActivity.newIntent(MainActivity.this));
+                } else  if (item.getItemId() == R.id.drawer_lancamentos) {
+                    drawerLayout.closeDrawers();
+                    viewPager.setCurrentItem(0);
+                    //  startActivity(AuthorActivity.newIntent(MainActivity.this));
                 }
 
                 return true;
