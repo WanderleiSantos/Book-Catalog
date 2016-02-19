@@ -78,6 +78,7 @@ public class ListBookAdapter extends BaseAdapter {
 
         Book book = bookList.get(position);
         viewHolder.bookTitle.setText(book.getVolumeInfo().getTitle());
+
         viewHolder.bookReleaseDate.setText(book.getVolumeInfo().getPublishedDate());
 
         viewHolder.bookAuthor.setText( Arrays.toString(book.getVolumeInfo().getAuthor()));
