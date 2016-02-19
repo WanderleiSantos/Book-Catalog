@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -39,7 +41,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_dehaze_white_24dp);
+        ab.setDisplayHomeAsUpEnabled(true);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -49,19 +56,21 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.drawer_authors) {
                     drawerLayout.closeDrawers();
                     viewPager.setCurrentItem(1);
-                  //  startActivity(AuthorActivity.newIntent(MainActivity.this));
+                    item.setChecked(true);
                 } else  if (item.getItemId() == R.id.drawer_lancamentos) {
                     drawerLayout.closeDrawers();
                     viewPager.setCurrentItem(0);
-                    //  startActivity(AuthorActivity.newIntent(MainActivity.this));
+                    item.setChecked(true);
                 }
 
                 return true;
             }
         });
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_white_24dp);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
     }
 
     public static Intent newIntent(Context context) {
