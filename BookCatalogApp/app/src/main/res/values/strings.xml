@@ -7,6 +7,9 @@
     <string name="text_lançamentos">Lançamentos</string>
     <string name="text_authors">Autores</string>
     <string name="title_activity_author">Autores</string>
+    <string name="buscarbooks">Buscar Livros</string>
+    <string name="text_book">Books</string>
+    <string name="searchbookActivityactivity_substitle_todos">Todos os Livros</string>
 
 
 </resources>
