@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,16 +30,15 @@ public class AsyncTaskSearchBooksByName extends AsyncTask<Void, Void, List<Book>
 
     private  List<Book> books;
     private BookLoadedListener myComponent;
-    private ProgressDialog progressDialog;
     private String nome;
-    private Context context;
+    private  ProgressBar progressBar;
 
 
 
-    public AsyncTaskSearchBooksByName(BookLoadedListener myComponent, String nome, Context context) {
+    public AsyncTaskSearchBooksByName(BookLoadedListener myComponent, String nome, ProgressBar progressBar) {
         this.nome = nome;
         this.myComponent = myComponent;
-        this.context = context;
+        this.progressBar = progressBar;
     }
 
     @Override
@@ -60,8 +61,6 @@ public class AsyncTaskSearchBooksByName extends AsyncTask<Void, Void, List<Book>
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            closeProgress();
         }
 
         return books;
@@ -69,7 +68,7 @@ public class AsyncTaskSearchBooksByName extends AsyncTask<Void, Void, List<Book>
 
     @Override
     protected void onPreExecute() {
-        openProgress();
+        progressBar.setVisibility(View.VISIBLE);
         super.onPreExecute();
     }
 
@@ -78,23 +77,8 @@ public class AsyncTaskSearchBooksByName extends AsyncTask<Void, Void, List<Book>
         if (myComponent != null) {
             myComponent.onUpcomingMoviesLoaded(listMovies);
         }
+
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
-    public void openProgress(){
-        try{
-            progressDialog = ProgressDialog.show(context, "", "Aguarde");
-        }catch (Throwable e){
-            Log.e("BookAPP", e.getMessage(), e);
-        }
-    }
-
-    public void closeProgress(){
-        try{
-            if (progressDialog != null){
-                progressDialog.dismiss();
-            }
-        }catch (Throwable e){
-            Log.e("BookAPP", e.getMessage(), e);
-        }
-    }
 }

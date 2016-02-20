@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.model.api.asynctask.AsyncTaskLoadBooks;
@@ -28,6 +29,7 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
     private ListView listView;
     private List<Book> bookList;
     private ListBookAdapter bookAdapter;
+    private ProgressBar progressBar;
 
     private static final String MYBOOKLIST_KEY = "booklist_key";
 
@@ -36,6 +38,8 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_books, container, false);
+
+        progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
 
         bookAdapter = new ListBookAdapter(getActivity());
         listView = (ListView) view.findViewById(R.id.listview_books);
@@ -54,10 +58,10 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
                 bookList = Arrays.asList(bookArray);
                 bookAdapter.setBooks(bookList);
             } else {
-                new AsyncTaskLoadBooks(this, getActivity()).execute();
+                new AsyncTaskLoadBooks(this, progressBar).execute();
             }
         } else {
-            new AsyncTaskLoadBooks(this, getActivity()).execute();
+            new AsyncTaskLoadBooks(this, progressBar).execute();
         }
 
         return view;

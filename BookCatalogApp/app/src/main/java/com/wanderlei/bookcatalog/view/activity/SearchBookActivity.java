@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
+import android.widget.ProgressBar;
 
 import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.model.api.asynctask.AsyncTaskLoadBooks;
@@ -39,6 +40,7 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
     private ListView listViewBooks;
     private List<Book> bookList;
     private ListBookAdapter bookAdapter;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        bookAdapter = new ListBookAdapter(this);
 
         String nome = getIntent().getStringExtra(INTENT_KEY_NOME);
         getSupportActionBar().setSubtitle(getString(R.string.searchbookActivityactivity_substitle_todos));
@@ -59,15 +63,14 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
                 bookList = Arrays.asList(bookArray);
                 bookAdapter.setBooks(bookList);
             } else {
-                new AsyncTaskSearchBooksByName(SearchBookActivity.this, nome, this).execute();
+                new AsyncTaskSearchBooksByName(SearchBookActivity.this, nome, progressBar).execute();
             }
         } else {
-            new AsyncTaskSearchBooksByName(SearchBookActivity.this, nome, this).execute();
+            new AsyncTaskSearchBooksByName(SearchBookActivity.this, nome, progressBar).execute();
         }
 
 
         listViewBooks = (ListView) findViewById(R.id.listview_books);
-        bookAdapter = new ListBookAdapter(this);
         listViewBooks.setAdapter(bookAdapter);
         listViewBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -102,7 +105,7 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new AsyncTaskSearchBooksByName(SearchBookActivity.this, query, SearchBookActivity.this).execute();
+                new AsyncTaskSearchBooksByName(SearchBookActivity.this, query, progressBar).execute();
                 return false;
             }
 
