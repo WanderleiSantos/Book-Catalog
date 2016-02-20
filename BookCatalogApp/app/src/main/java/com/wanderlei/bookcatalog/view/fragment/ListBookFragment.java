@@ -54,10 +54,10 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
                 bookList = Arrays.asList(bookArray);
                 bookAdapter.setBooks(bookList);
             } else {
-                new AsyncTaskLoadBooks(this).execute();
+                new AsyncTaskLoadBooks(this, getActivity()).execute();
             }
         } else {
-            new AsyncTaskLoadBooks(this).execute();
+            new AsyncTaskLoadBooks(this, getActivity()).execute();
         }
 
         return view;

@@ -1,20 +1,26 @@
 package com.wanderlei.bookcatalog.view.activity;
 
+import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.support.v7.widget.SearchView;
 
 import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.model.api.asynctask.AsyncTaskLoadBooks;
+import com.wanderlei.bookcatalog.model.api.asynctask.AsyncTaskSearchBooksByName;
 import com.wanderlei.bookcatalog.model.api.asynctask.BookLoadedListener;
 import com.wanderlei.bookcatalog.model.entity.Book;
 import com.wanderlei.bookcatalog.view.listviewadapter.ListBookAdapter;
@@ -53,10 +59,10 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
                 bookList = Arrays.asList(bookArray);
                 bookAdapter.setBooks(bookList);
             } else {
-                new AsyncTaskLoadBooks(SearchBookActivity.this).execute();
+                new AsyncTaskSearchBooksByName(SearchBookActivity.this, nome, this).execute();
             }
         } else {
-            new AsyncTaskLoadBooks(SearchBookActivity.this).execute();
+            new AsyncTaskSearchBooksByName(SearchBookActivity.this, nome, this).execute();
         }
 
 
@@ -80,6 +86,34 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
         intent.putExtra(INTENT_KEY_NOME, nome);
 
         return intent;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_books, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint(getString(R.string.buscarbooks));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                new AsyncTaskSearchBooksByName(SearchBookActivity.this, query, SearchBookActivity.this).execute();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

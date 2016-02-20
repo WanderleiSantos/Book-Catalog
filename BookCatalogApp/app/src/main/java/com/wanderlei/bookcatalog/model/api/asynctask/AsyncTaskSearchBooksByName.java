@@ -10,7 +10,6 @@ import com.google.gson.GsonBuilder;
 import com.wanderlei.bookcatalog.model.api.BookAPI;
 import com.wanderlei.bookcatalog.model.api.ItemTypeAdapterFactory;
 import com.wanderlei.bookcatalog.model.entity.Book;
-import com.wanderlei.bookcatalog.view.activity.MainActivity;
 
 import java.util.List;
 
@@ -20,18 +19,23 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 /**
- * Created by wanderlei on 16/02/16.
+ * Created by wanderlei on 20/02/16.
  */
-public class AsyncTaskLoadBooks extends AsyncTask<Void, Void, List<Book>> {
+public class AsyncTaskSearchBooksByName extends AsyncTask<Void, Void, List<Book>> {
 
     public static final String API = "https://www.googleapis.com/books/v1/";
+    private static final int LIMIT = 20;
+
     private  List<Book> books;
     private BookLoadedListener myComponent;
     private ProgressDialog progressDialog;
+    private String nome;
     private Context context;
 
 
-    public AsyncTaskLoadBooks(BookLoadedListener myComponent, Context context) {
+
+    public AsyncTaskSearchBooksByName(BookLoadedListener myComponent, String nome, Context context) {
+        this.nome = nome;
         this.myComponent = myComponent;
         this.context = context;
     }
@@ -48,8 +52,7 @@ public class AsyncTaskLoadBooks extends AsyncTask<Void, Void, List<Book>> {
                 .build();
         BookAPI bookAPI = retrofit.create(BookAPI.class);
 
-
-        final Call<List<Book>> listCallBooks = bookAPI.getBooksNewest();
+        final Call<List<Book>> listCallBooks = bookAPI.getBooksByName(nome, LIMIT);
         try {
 
             Response<List<Book>> response = listCallBooks.execute();
@@ -70,7 +73,6 @@ public class AsyncTaskLoadBooks extends AsyncTask<Void, Void, List<Book>> {
         super.onPreExecute();
     }
 
-
     @Override
     protected void onPostExecute(List<Book> listMovies) {
         if (myComponent != null) {
@@ -88,9 +90,9 @@ public class AsyncTaskLoadBooks extends AsyncTask<Void, Void, List<Book>> {
 
     public void closeProgress(){
         try{
-           if (progressDialog != null){
-               progressDialog.dismiss();
-           }
+            if (progressDialog != null){
+                progressDialog.dismiss();
+            }
         }catch (Throwable e){
             Log.e("BookAPP", e.getMessage(), e);
         }

@@ -10,6 +10,7 @@
     <string name="buscarbooks">Buscar Livros</string>
     <string name="text_book">Books</string>
     <string name="searchbookActivityactivity_substitle_todos">Todos os Livros</string>
+    <string name="version_info">0.1</string>
 
 
 </resources>
