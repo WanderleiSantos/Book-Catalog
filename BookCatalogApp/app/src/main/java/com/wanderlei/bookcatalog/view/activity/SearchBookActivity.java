@@ -1,11 +1,9 @@
 package com.wanderlei.bookcatalog.view.activity;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
@@ -20,7 +18,6 @@ import android.support.v7.widget.SearchView;
 import android.widget.ProgressBar;
 
 import com.wanderlei.bookcatalog.R;
-import com.wanderlei.bookcatalog.model.api.asynctask.AsyncTaskLoadBooks;
 import com.wanderlei.bookcatalog.model.api.asynctask.AsyncTaskSearchBooksByName;
 import com.wanderlei.bookcatalog.model.api.asynctask.BookLoadedListener;
 import com.wanderlei.bookcatalog.model.entity.Book;
@@ -79,8 +76,6 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
                 startActivity(BookActivity.newIntent(SearchBookActivity.this, book));
             }
         });
-
-
 
     }
 

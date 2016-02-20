@@ -18,6 +18,8 @@ import java.util.Arrays;
 /**
  * Created by wanderlei on 12/02/16.
  */
+
+
 public class BookActivity extends AppCompatActivity {
 
     private static final String INTENT_KEY_BOOK = "intent_key_book";

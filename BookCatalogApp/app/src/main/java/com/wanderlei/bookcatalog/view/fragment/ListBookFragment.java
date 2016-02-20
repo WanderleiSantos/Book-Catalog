@@ -17,7 +17,6 @@ import com.wanderlei.bookcatalog.model.entity.Book;
 import com.wanderlei.bookcatalog.view.activity.BookActivity;
 import com.wanderlei.bookcatalog.view.listviewadapter.ListBookAdapter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

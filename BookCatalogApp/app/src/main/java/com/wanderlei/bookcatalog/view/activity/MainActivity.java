@@ -2,7 +2,6 @@ package com.wanderlei.bookcatalog.view.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -18,8 +17,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-
 import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.view.fragment.ListBookFragment;
 
@@ -31,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String API = "https://www.googleapis.com/books/v1/volumes?q=colecionador&key=";
     private DrawerLayout drawerLayout;
     private ViewPager viewPager;
+    private NavigationView navigationView;
 
 
     @Override
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     drawerLayout.closeDrawers();
                     viewPager.setCurrentItem(1);
                     item.setChecked(true);
-                } else  if (item.getItemId() == R.id.drawer_lancamentos) {
+                } else if (item.getItemId() == R.id.drawer_lancamentos) {
                     drawerLayout.closeDrawers();
                     viewPager.setCurrentItem(0);
                     item.setChecked(true);
@@ -74,11 +72,31 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-    }
+            }
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, BookActivity.class);
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    default:
+                    case 0:
+                        navigationView.getMenu().findItem(R.id.drawer_lancamentos).setChecked(true);
+                        break;
+                    case 1:
+                        navigationView.getMenu().findItem(R.id.drawer_authors).setChecked(true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
 
@@ -136,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
                     return new ListBookFragment();
             }
         }
+
+
 
         @Override
         public int getCount() {
