@@ -3,6 +3,7 @@ package com.wanderlei.bookcatalog.view.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,13 @@ import java.util.List;
 /**
  * Created by wanderlei on 12/02/16.
  */
-public class ListBookFragment extends Fragment implements BookLoadedListener {
+public class ListBookFragment extends Fragment implements BookLoadedListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ListView listView;
     private List<Book> bookList;
     private ListBookAdapter bookAdapter;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private static final String MYBOOKLIST_KEY = "booklist_key";
 
@@ -39,6 +41,9 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
         View view = inflater.inflate(R.layout.fragment_books, container, false);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeBooksHits);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         bookAdapter = new ListBookAdapter(getActivity());
         listView = (ListView) view.findViewById(R.id.listview_books);
@@ -77,7 +82,18 @@ public class ListBookFragment extends Fragment implements BookLoadedListener {
 
     @Override
     public void onUpcomingMoviesLoaded(List<Book> listBooks) {
+
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+
         bookAdapter.setBooks(listBooks);
         this.bookList = listBooks;
+    }
+
+    @Override
+    public void onRefresh() {
+        new AsyncTaskLoadBooks(this, progressBar).execute();
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }
