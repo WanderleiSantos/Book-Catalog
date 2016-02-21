@@ -14,13 +14,13 @@ import retrofit.http.Query;
  */
 public interface BookAPI {
 
-    @GET("volumes?q=quilting&maxResults=40")
+    @GET("volumes?q=inauthor:&orderBy=newest&maxResults=40")
     Call<List<Book>> getBooksNewest();
 
     @GET("volumes")
     Call<List<Book>> getBooksByName(@Query("q") String nome, @Query("maxResults") int limit);
 
-    @GET("")
-    Call<List<Book>> getBooksByAuthor();
+    @GET("volumes")
+    Call<List<Book>> getBooksByAuthor(@Query("q") String nome);
 
 }
