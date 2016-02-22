@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_bar" />
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -14,10 +17,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="gone" />
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/app_bar" />
 
     <ListView
         android:id="@+id/listview_books"

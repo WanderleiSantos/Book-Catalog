@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -126,7 +127,7 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -137,4 +138,6 @@ public class SearchBookActivity extends AppCompatActivity implements BookLoadedL
         bookAdapter.setBooks(listBooks);
         this.bookList = listBooks;
     }
+
+
 }
