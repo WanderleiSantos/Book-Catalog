@@ -17,18 +17,37 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.wanderlei.bookcatalog.BookCatalogApplication;
 import com.wanderlei.bookcatalog.R;
+import com.wanderlei.bookcatalog.dagger.MainActivityViewModule;
+import com.wanderlei.bookcatalog.view.MainActivityView;
 import com.wanderlei.bookcatalog.view.fragment.ListBookFragment;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by wanderlei on 28/01/16.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityView{
 
     public static final String API = "https://www.googleapis.com/books/v1/volumes?q=colecionador&key=";
-    private DrawerLayout drawerLayout;
-    private ViewPager viewPager;
-    private NavigationView navigationView;
+
+    @Bind(R.id.navigation_view)
+    NavigationView navigationView;
+
+    @Bind(R.id.viewpager)
+    ViewPager viewPager;
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+
+    @Bind(R.id.tabs)
+    TabLayout tabLayout;
 
 
     @Override
@@ -36,21 +55,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
+        ((BookCatalogApplication) getApplication()).getObjectGraph().plus(new MainActivityViewModule(this)).inject(this);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_dehaze_white_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -70,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
