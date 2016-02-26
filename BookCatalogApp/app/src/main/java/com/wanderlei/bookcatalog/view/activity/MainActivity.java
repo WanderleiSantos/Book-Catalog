@@ -126,8 +126,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                startActivity(SearchBookActivity.newIntent(MainActivity.this));
-                //startActivity(SearchBookActivity.newIntent(MainActivity.this, query));
+                startActivity(SearchBookActivity.newIntent(MainActivity.this, query));
                 return false;
             }
 

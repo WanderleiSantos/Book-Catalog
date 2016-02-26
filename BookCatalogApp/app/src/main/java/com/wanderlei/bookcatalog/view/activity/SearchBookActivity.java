@@ -44,7 +44,7 @@ public class SearchBookActivity extends AppCompatActivity implements SearchBookV
 
     private static final String INTENT_KEY_NOME = "intent_key_nome";
     private final String BUNDLE_KEY_BOOK = "bundle_key_book";
-    private final String BUNDLE_KEY_NOME = "bundle_key_nome";
+    private static final String BUNDLE_KEY_NOME = "bundle_key_nome";
 
     @Inject
     SearchBookPresenter bookPresenter;
@@ -71,7 +71,6 @@ public class SearchBookActivity extends AppCompatActivity implements SearchBookV
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setSubtitle(getString(R.string.searchbookActivityactivity_substitle_todos));
 
         if (savedInstanceState != null){
             if (savedInstanceState.getString(BUNDLE_KEY_NOME) != null){
@@ -84,17 +83,18 @@ public class SearchBookActivity extends AppCompatActivity implements SearchBookV
             } else if (nome != null){
                 bookPresenter.searchByName(nome);
             }
+        } else {
+            nome = getIntent().getStringExtra(BUNDLE_KEY_NOME);
+            getSupportActionBar().setSubtitle(nome);
+            bookPresenter.searchByName(nome);
         }
-
-      //  bookPresenter.searchByName("piano");
 
     }
 
-    public static Intent newIntent(Context context) {
-        //Intent intent = new Intent(context, SearchBookActivity.class);
-       // intent.putExtra(INTENT_KEY_NOME, nome);
-        return new Intent(context, SearchBookActivity.class);
-        //return intent;
+    public static Intent newIntent(Context context, String nome) {
+        Intent intent = new Intent(context, SearchBookActivity.class);
+        intent.putExtra(BUNDLE_KEY_NOME, nome);
+        return intent;
     }
 
     @Override
@@ -103,6 +103,7 @@ public class SearchBookActivity extends AppCompatActivity implements SearchBookV
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setQueryHint(getString(R.string.buscarbooks));
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
         menu.findItem(R.id.action_search).expandActionView();
