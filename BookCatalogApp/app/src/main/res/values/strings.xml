@@ -12,5 +12,7 @@
     <string name="searchbookActivityactivity_substitle_todos">Todos os Livros</string>
     <string name="version_info">0.1</string>
 
+    <string name="base_url_googlebooksapi">https://www.googleapis.com/books/v1/</string>
+
 
 </resources>

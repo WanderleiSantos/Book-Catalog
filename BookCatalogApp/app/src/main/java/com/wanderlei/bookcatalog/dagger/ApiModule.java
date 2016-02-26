@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wanderlei.bookcatalog.model.api.BookAPI;
 import com.wanderlei.bookcatalog.model.api.ItemTypeAdapterFactory;
+import com.wanderlei.bookcatalog.model.api.SearchBookApi;
+import com.wanderlei.bookcatalog.model.api.impl.SearchBookApiImpl;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,7 +19,6 @@ import retrofit.Retrofit;
  */
 @Module(library = true, includes = AppModule.class)
 public class ApiModule {
-
 
     public static final String API = "https://www.googleapis.com/books/v1/";
 
@@ -34,5 +35,11 @@ public class ApiModule {
     public BookAPI provideBookAPI(Context context){
         return provideRetrofit(context).create(BookAPI.class);
     }
+
+    @Provides
+    public SearchBookApi provideGameApi(Context context) {
+        return new SearchBookApiImpl(context, provideBookAPI(context));
+    }
+
 
 }

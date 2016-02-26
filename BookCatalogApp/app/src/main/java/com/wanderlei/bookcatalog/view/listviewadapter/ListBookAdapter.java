@@ -18,16 +18,22 @@ import java.util.List;
 /**
  * Created by wanderlei on 12/02/16.
  */
-public class ListBookAdapter extends BaseAdapter {
+public class ListBookAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Context mContext;
     private List<Book> bookList;
     private LayoutInflater mLayoutInflater;
     private RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack;
+    private OnItemClickListener<Book> onItemClickListener;
 
     public ListBookAdapter( Context mContext) {
         this.mContext = mContext;
         this.mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public ListBookAdapter(List<Book> books, OnItemClickListener<Book> onItemClickListener) {
+        this.bookList = books;
+        this.onItemClickListener = onItemClickListener;
     }
 
     public void setBooks(List<Book> listBoks) {
@@ -85,6 +91,12 @@ public class ListBookAdapter extends BaseAdapter {
         }
 
         return convertView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Book book = (Book) v.getTag();
+        onItemClickListener.onClick(book);
     }
 
     static class ViewHolder{
