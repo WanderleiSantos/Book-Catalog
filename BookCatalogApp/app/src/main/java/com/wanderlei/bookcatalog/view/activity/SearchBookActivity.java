@@ -8,6 +8,10 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.wanderlei.bookcatalog.BookCatalogApplication;
 import com.wanderlei.bookcatalog.R;
@@ -42,15 +47,14 @@ import butterknife.ButterKnife;
  */
 public class SearchBookActivity extends AppCompatActivity implements SearchBookView {
 
-    private static final String INTENT_KEY_NOME = "intent_key_nome";
     private final String BUNDLE_KEY_BOOK = "bundle_key_book";
     private static final String BUNDLE_KEY_NOME = "bundle_key_nome";
 
     @Inject
     SearchBookPresenter bookPresenter;
 
-    @Bind(R.id.listview_books)
-    ListView listViewBooks;
+    @Bind(R.id.recyclerview_book)
+    RecyclerView recyclerView;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -59,7 +63,6 @@ public class SearchBookActivity extends AppCompatActivity implements SearchBookV
     ProgressBar progressBar;
 
     private List<Book> bookList;
-    private ListBookAdapter bookAdapter;
     private String nome;
 
     @Override
@@ -146,23 +149,29 @@ public class SearchBookActivity extends AppCompatActivity implements SearchBookV
 
     @Override
     public void errorToListBooks() {
-
+        Toast.makeText(SearchBookActivity.this, "Erro ao carregar a listagem de livros.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showBook(List<Book> books) {
         this.bookList = books;
-        listViewBooks.setAdapter(new ListBookAdapter(books, new OnItemClickListener<Book>() {
+        recyclerView.setAdapter(new ListBookAdapter(books, new OnItemClickListener<Book>() {
             @Override
             public void onClick(Book book) {
                 startActivity(BookActivity.newIntent(SearchBookActivity.this, book));
             }
         }));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(SearchBookActivity.this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     @Override
     public void errorBookNotFound() {
-
+        Toast.makeText(SearchBookActivity.this, "Nenhum livro encontrado.", Toast.LENGTH_LONG).show();
     }
 
     @Override

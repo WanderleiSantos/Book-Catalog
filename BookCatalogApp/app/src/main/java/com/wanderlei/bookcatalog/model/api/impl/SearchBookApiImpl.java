@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.wanderlei.bookcatalog.model.api.BookAPI;
 import com.wanderlei.bookcatalog.model.api.GenericApi;
 import com.wanderlei.bookcatalog.model.api.SearchBookApi;
+import com.wanderlei.bookcatalog.model.api.asynctask.impl.AsyncTaskLoadLancBook;
 import com.wanderlei.bookcatalog.model.api.asynctask.impl.AsyncTaskSearchBooksByName;
 
 /**
@@ -14,6 +15,7 @@ import com.wanderlei.bookcatalog.model.api.asynctask.impl.AsyncTaskSearchBooksBy
 public class SearchBookApiImpl extends GenericApi implements SearchBookApi {
 
     private AsyncTaskSearchBooksByName asyncTaskSearchBooksByName;
+    private AsyncTaskLoadLancBook asyncTaskLoadLancBook;
     private BookAPI bookAPI;
 
     public SearchBookApiImpl(Context context, BookAPI bookAPI) {
@@ -27,6 +29,14 @@ public class SearchBookApiImpl extends GenericApi implements SearchBookApi {
         asyncTaskSearchBooksByName = new AsyncTaskSearchBooksByName(getContext(), bookAPI);
         asyncTaskSearchBooksByName.setApiResultListner(getServiceResultListener());
         asyncTaskSearchBooksByName.execute(name);
+    }
+
+    @Override
+    public void searchLanc() {
+        verifyServiceResultListener();
+        asyncTaskLoadLancBook = new AsyncTaskLoadLancBook(getContext(), bookAPI);
+        asyncTaskLoadLancBook.setApiResultListner(getServiceResultListener());
+        asyncTaskLoadLancBook.execute();
     }
 
     @Override

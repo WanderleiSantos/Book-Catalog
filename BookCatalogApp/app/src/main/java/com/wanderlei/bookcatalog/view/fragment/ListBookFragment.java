@@ -4,68 +4,69 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.wanderlei.bookcatalog.BookCatalogApplication;
 import com.wanderlei.bookcatalog.R;
-import com.wanderlei.bookcatalog.model.api.asynctask.AsyncTaskLoadBooks;
-import com.wanderlei.bookcatalog.model.api.asynctask.BookLoadedListener;
+import com.wanderlei.bookcatalog.dagger.LancBookViewModule;
 import com.wanderlei.bookcatalog.model.entity.Book;
+import com.wanderlei.bookcatalog.presenter.LancBookPresenter;
+import com.wanderlei.bookcatalog.view.LancBookView;
 import com.wanderlei.bookcatalog.view.activity.BookActivity;
 import com.wanderlei.bookcatalog.view.listviewadapter.ListBookAdapter;
+import com.wanderlei.bookcatalog.view.listviewadapter.OnItemClickListener;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by wanderlei on 12/02/16.
  */
-public class ListBookFragment extends Fragment implements BookLoadedListener, SwipeRefreshLayout.OnRefreshListener {
+public class ListBookFragment extends Fragment implements LancBookView, SwipeRefreshLayout.OnRefreshListener {
 
-    private ListView listView;
-    private List<Book> bookList;
-    private ListBookAdapter bookAdapter;
-    private ProgressBar progressBar;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private static final String MYBOOKLIST_KEY = "booklist_key";
+
+    @Inject
+    LancBookPresenter presenter;
+
+    @Bind(R.id.progressbar)
+    ProgressBar progressBar;
+
+    @Bind(R.id.swipeBooksHits)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @Bind(R.id.recyclerview_book)
+    RecyclerView recyclerView;
+
+    private List<Book> bookList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_books, container, false);
+        ButterKnife.bind(this, view);
+        ((BookCatalogApplication) getActivity().getApplication()).getObjectGraph().plus(new LancBookViewModule(this)).inject(this);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeBooksHits);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        bookAdapter = new ListBookAdapter(getActivity());
-        listView = (ListView) view.findViewById(R.id.listview_books);
-        listView.setAdapter(bookAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Book book = (Book) parent.getAdapter().getItem(position);
-                startActivity(BookActivity.newIntent(getActivity(), book));
-            }
-        });
-
-        if (savedInstanceState != null){
-            Book[] bookArray = (Book[]) savedInstanceState.getParcelableArray(MYBOOKLIST_KEY);
-            if (bookArray != null){
-                bookList = Arrays.asList(bookArray);
-                bookAdapter.setBooks(bookList);
-            } else {
-                new AsyncTaskLoadBooks(this, progressBar).execute();
-            }
-        } else {
-            new AsyncTaskLoadBooks(this, progressBar).execute();
+        if (savedInstanceState != null && savedInstanceState.getParcelableArrayList(MYBOOKLIST_KEY) != null){
+            bookList = savedInstanceState.getParcelableArrayList(MYBOOKLIST_KEY);
+            showBook(bookList);
+        } else{
+            presenter.loadLancBooks();
         }
 
         return view;
@@ -75,25 +76,53 @@ public class ListBookFragment extends Fragment implements BookLoadedListener, Sw
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if (bookList != null){
-            outState.putParcelableArray(MYBOOKLIST_KEY, bookList.toArray(new Book[bookList.size()]));
+            outState.putParcelableArrayList(MYBOOKLIST_KEY, new ArrayList<>(bookList));
         }
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onUpcomingMoviesLoaded(List<Book> listBooks) {
-
-        if (mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
-
-        bookAdapter.setBooks(listBooks);
-        this.bookList = listBooks;
-    }
 
     @Override
     public void onRefresh() {
-        new AsyncTaskLoadBooks(this, progressBar).execute();
+        presenter.loadLancBooks();
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void errorToListBooks() {
+        Toast.makeText(getActivity(), "Nenhum livro encontrado.", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showBook(List<Book> books) {
+        this.bookList = books;
+        recyclerView.setAdapter(new ListBookAdapter(books, new OnItemClickListener<Book>() {
+            @Override
+            public void onClick(Book book) {
+                startActivity(BookActivity.newIntent(getActivity(), book));
+            }
+        }));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    @Override
+    public void errorBookNotFound() {
+        Toast.makeText(getActivity(), "Nenhum livro encontrado.", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void dismissLoading() {
         progressBar.setVisibility(View.INVISIBLE);
     }
 }

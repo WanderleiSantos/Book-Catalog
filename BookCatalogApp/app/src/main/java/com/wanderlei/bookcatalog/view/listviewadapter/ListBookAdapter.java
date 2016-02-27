@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.support.v7.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.model.entity.Book;
@@ -15,82 +15,22 @@ import com.wanderlei.bookcatalog.model.entity.Book;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by wanderlei on 12/02/16.
  */
-public class ListBookAdapter extends BaseAdapter implements View.OnClickListener {
+public class ListBookAdapter extends RecyclerView.Adapter<ListBookAdapter.ViewHolder> implements View.OnClickListener {
 
-    private Context mContext;
+
     private List<Book> bookList;
-    private LayoutInflater mLayoutInflater;
-    private RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack;
     private OnItemClickListener<Book> onItemClickListener;
 
-    public ListBookAdapter( Context mContext) {
-        this.mContext = mContext;
-        this.mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
 
-    public ListBookAdapter(List<Book> books, OnItemClickListener<Book> onItemClickListener) {
-        this.bookList = books;
+    public ListBookAdapter(List<Book> bookList, OnItemClickListener<Book> onItemClickListener) {
+        this.bookList = bookList;
         this.onItemClickListener = onItemClickListener;
-    }
-
-    public void setBooks(List<Book> listBoks) {
-        this.bookList = listBoks;
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public int getCount() {
-        return bookList != null ? bookList.size() : 0;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return bookList != null ? bookList.get(position) : null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        ViewHolder viewHolder = null;
-
-        if (convertView == null){
-
-            viewHolder = new ViewHolder();
-            int layout = R.layout.list_books;
-            convertView = mLayoutInflater.inflate(layout, null);
-            convertView.setTag(viewHolder);
-
-            viewHolder.bookTitle = (TextView) convertView.findViewById(R.id.bookTitle);
-            viewHolder.bookReleaseDate = (TextView) convertView.findViewById(R.id.bookReleaseDate);
-            viewHolder.bookAuthor = (TextView) convertView.findViewById(R.id.bookAuthor);
-            viewHolder.bookThumbnail = (ImageView) convertView.findViewById(R.id.bookThumbnail);
-
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        Book book = bookList.get(position);
-        viewHolder.bookTitle.setText(book.getVolumeInfo().getTitle());
-
-        viewHolder.bookReleaseDate.setText(book.getVolumeInfo().getPublishedDate());
-
-        viewHolder.bookAuthor.setText( Arrays.toString(book.getVolumeInfo().getAuthor()));
-
-        if (book.getVolumeInfo().getImage() != null && book.getVolumeInfo().getImage().getSmallThumbnail() != null) {
-            Picasso.with(viewHolder.bookThumbnail.getContext()).load(book.getVolumeInfo().getImage().getSmallThumbnail()).placeholder(R.drawable.noimagebook).into(viewHolder.bookThumbnail);
-        } else {
-            viewHolder.bookThumbnail.setImageDrawable(viewHolder.bookThumbnail.getContext().getResources().getDrawable(R.drawable.noimagebook));
-        }
-
-        return convertView;
     }
 
     @Override
@@ -99,10 +39,56 @@ public class ListBookAdapter extends BaseAdapter implements View.OnClickListener
         onItemClickListener.onClick(book);
     }
 
-    static class ViewHolder{
-        TextView bookTitle;
-        TextView bookReleaseDate;
-        TextView bookAuthor;
-        ImageView bookThumbnail;
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_books, parent, false);
+        view.setOnClickListener(this);
+        return new ViewHolder(view);
     }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+
+        Book book = bookList.get(position);
+        holder.itemView.setTag(book);
+
+        holder.bookTitle.setText(book.getVolumeInfo().getTitle());
+
+        holder.bookReleaseDate.setText(book.getVolumeInfo().getPublishedDate());
+
+        holder.bookAuthor.setText( Arrays.toString(book.getVolumeInfo().getAuthor()));
+
+        if (book.getVolumeInfo().getImage() != null && book.getVolumeInfo().getImage().getSmallThumbnail() != null) {
+            Picasso.with(holder.bookThumbnail.getContext()).load(book.getVolumeInfo().getImage().getSmallThumbnail()).placeholder(R.drawable.noimagebook).into(holder.bookThumbnail);
+        } else {
+            holder.bookThumbnail.setImageDrawable(holder.bookThumbnail.getContext().getResources().getDrawable(R.drawable.noimagebook));
+        }
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return bookList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.bookTitle)
+        TextView bookTitle;
+
+        @Bind(R.id.bookReleaseDate)
+        TextView bookReleaseDate;
+
+        @Bind(R.id.bookAuthor)
+        TextView bookAuthor;
+
+        @Bind(R.id.bookThumbnail)
+        ImageView bookThumbnail;
+
+        public ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
 }

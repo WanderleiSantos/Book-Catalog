@@ -18,12 +18,18 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_book"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar" />
+
+   <!-- <ListView
         android:id="@+id/listview_books"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/colorHighlight"
         android:layout_below="@id/toolbar"
-        android:dividerHeight="1dp"/>
+        android:dividerHeight="1dp"/> -->
 
 </RelativeLayout>

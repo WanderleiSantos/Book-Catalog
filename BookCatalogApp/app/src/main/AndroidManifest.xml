@@ -26,14 +26,6 @@
                 android:value=".view.activity.MainActivity" />
         </activity>
 
-       <!-- <activity android:name=".view.activity.SearchBookActivity"
-            android:label="@string/text_book">
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.activity.MainActivity" />
-        </activity> -->
 
         <activity android:name=".view.activity.SearchBookActivity">
             <meta-data
@@ -45,10 +37,6 @@
         </activity>
 
 
-        <activity
-            android:name=".view.activity.AuthorActivity"
-            android:label="@string/title_activity_author"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

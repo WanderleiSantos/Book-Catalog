@@ -6,4 +6,6 @@ package com.wanderlei.bookcatalog.model.api;
 public interface SearchBookApi  extends AsyncService{
 
     void searchByName(String name);
+
+    void searchLanc();
 }
