@@ -23,6 +23,7 @@ import com.wanderlei.bookcatalog.R;
 import com.wanderlei.bookcatalog.dagger.MainActivityViewModule;
 import com.wanderlei.bookcatalog.view.MainActivityView;
 import com.wanderlei.bookcatalog.view.fragment.ListBookFragment;
+import com.wanderlei.bookcatalog.view.fragment.ListEbookFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                if (item.getItemId() == R.id.drawer_authors) {
+                if (item.getItemId() == R.id.drawer_ebooks) {
                     drawerLayout.closeDrawers();
                     viewPager.setCurrentItem(1);
                     item.setChecked(true);
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
                         navigationView.getMenu().findItem(R.id.drawer_lancamentos).setChecked(true);
                         break;
                     case 1:
-                        navigationView.getMenu().findItem(R.id.drawer_authors).setChecked(true);
+                        navigationView.getMenu().findItem(R.id.drawer_ebooks).setChecked(true);
                         break;
                 }
             }
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
                 case 0:
                     return new ListBookFragment();
                 case 1:
-                    return new ListBookFragment();
+                    return new ListEbookFragment();
             }
         }
 
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
                 case 0:
                     return getString(R.string.text_lançamentos);
                 case 1:
-                    return getString(R.string.text_authors);
+                    return getString(R.string.text_lançamentos_ebooks);
             }
         }
     }

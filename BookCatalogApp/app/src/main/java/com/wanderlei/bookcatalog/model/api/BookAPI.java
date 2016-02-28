@@ -23,4 +23,6 @@ public interface BookAPI {
     @GET("volumes")
     Call<List<Book>> getBooksByAuthor(@Query("q") String nome);
 
+    @GET("volumes?q=filter=free-ebooks&orderBy=newest")
+    Call<List<Book>> getEbooks();
 }

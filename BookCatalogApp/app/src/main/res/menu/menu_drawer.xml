@@ -10,9 +10,9 @@
             android:title="@string/text_lançamentos"/>
 
         <item
-            android:id="@+id/drawer_authors"
+            android:id="@+id/drawer_ebooks"
             android:icon="@drawable/ic_author"
-            android:title="@string/text_authors"/>
+            android:title="@string/text_lançamentos_ebooks"/>
 
     </group>
 </menu>

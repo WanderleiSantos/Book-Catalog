@@ -4,7 +4,8 @@
     <string name="text_description">Descrição</string>
 
     <string name="fragment_list_books">Lançamentos</string>
-    <string name="text_lançamentos">Lançamentos</string>
+    <string name="text_lançamentos">Lançamentos Books</string>
+    <string name="text_lançamentos_ebooks">Lançamentos eBooks</string>
     <string name="text_authors">Autores</string>
     <string name="title_activity_author">Autores</string>
     <string name="buscarbooks">Buscar Livros</string>

@@ -7,6 +7,7 @@ import com.wanderlei.bookcatalog.model.api.BookAPI;
 import com.wanderlei.bookcatalog.model.api.GenericApi;
 import com.wanderlei.bookcatalog.model.api.SearchBookApi;
 import com.wanderlei.bookcatalog.model.api.asynctask.impl.AsyncTaskLoadLancBook;
+import com.wanderlei.bookcatalog.model.api.asynctask.impl.AsyncTaskLoadLancEbook;
 import com.wanderlei.bookcatalog.model.api.asynctask.impl.AsyncTaskSearchBooksByName;
 
 /**
@@ -16,6 +17,7 @@ public class SearchBookApiImpl extends GenericApi implements SearchBookApi {
 
     private AsyncTaskSearchBooksByName asyncTaskSearchBooksByName;
     private AsyncTaskLoadLancBook asyncTaskLoadLancBook;
+    private AsyncTaskLoadLancEbook asyncTaskLoadLancEbook;
     private BookAPI bookAPI;
 
     public SearchBookApiImpl(Context context, BookAPI bookAPI) {
@@ -37,6 +39,14 @@ public class SearchBookApiImpl extends GenericApi implements SearchBookApi {
         asyncTaskLoadLancBook = new AsyncTaskLoadLancBook(getContext(), bookAPI);
         asyncTaskLoadLancBook.setApiResultListner(getServiceResultListener());
         asyncTaskLoadLancBook.execute();
+    }
+
+    @Override
+    public void searchEbooks() {
+        verifyServiceResultListener();
+        asyncTaskLoadLancEbook = new AsyncTaskLoadLancEbook(getContext(), bookAPI);
+        asyncTaskLoadLancEbook.setApiResultListner(getServiceResultListener());
+        asyncTaskLoadLancEbook.execute();
     }
 
     @Override
